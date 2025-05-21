@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offset Generate Tool V3.8.0 | SrcLeakerVip</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #fff;
+            padding: 15px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .maintenance-mode {
+            text-align: center;
+            max-width: 500px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            border: 1px solid #f00;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .maintenance-mode h1 {
+            color: #f00;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .maintenance-mode p {
+            color: #aaa;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            border: 1px solid #ffd700;
+            display: none;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ffd700;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #ffd700;
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .header .subtitle {
+            font-size: 14px;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+
+        .vip-badge {
+            display: inline-block;
+            background: linear-gradient(90deg, #ffd700, #ff8c00);
+            color: #000;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .option-section {
+            margin-bottom: 25px;
+            background: rgba(30, 30, 60, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 3px solid #ffd700;
+        }
+
+        .option-title {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #ffd700;
+            display: flex;
+            align-items: center;
+        }
+
+        .option-title span {
+            margin-right: 10px;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 10px;
+            background: rgba(50, 50, 80, 0.7);
+            border: 1px solid #444;
+            border-radius: 5px;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        select option {
+            background: #333;
+        }
+
+        .lib-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .lib-table th, .lib-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+
+        .lib-table th {
+            color: #ffd700;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, #ffd700, #ff8c00);
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .generate-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .vip-features {
+            margin-top: 25px;
+            padding: 15px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 10px;
+            border: 1px dashed #ffd700;
+        }
+
+        .vip-features h3 {
+            color: #ffd700;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .vip-features ul {
+            list-style-type: none;
+        }
+
+        .vip-features li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .vip-features li:before {
+            content: "✓";
+            color: #ffd700;
+            position: absolute;
+            left: 0;
+        }
+
+        .note {
+            font-size: 12px;
+            color: #aaa;
+            text-align: center;
+            margin-top: 20px;
+            font-style: italic;
+        }
+
+        .watermark {
+            font-size: 10px;
+            text-align: center;
+            margin-top: 20px;
+            color: #555;
+        }
+
+        .offset-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0, 50, 0, 0.3);
+            border: 1px solid #0f0;
+            border-radius: 5px;
+            font-family: monospace;
+            word-break: break-all;
+            display: none;
+        }
+
+        .copy-btn {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 10px;
+            float: right;
+        }
+        
+        .loader {
+            display: none;
+            border: 3px solid rgba(255, 215, 0, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid #ffd700;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .success-animation {
+            display: none;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .checkmark {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 3;
+            stroke: #0f0;
+            stroke-miterlimit: 10;
+            margin: 0 auto;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+            animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+        }
+
+        .checkmark__circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 3;
+            stroke-miterlimit: 10;
+            stroke: #0f0;
+            fill: none;
+            animation: stroke .6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+
+        .checkmark__check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke .3s cubic-bezier(0.65, 0, 0.45, 1) .8s forwards;
+        }
+
+        @keyframes stroke {
+            100% { stroke-dashoffset: 0; }
+        }
+
+        @keyframes scale {
+            0%, 100% { transform: none; }
+            50% { transform: scale3d(1.1, 1.1, 1); }
+        }
+
+        @keyframes fill {
+            100% { box-shadow: inset 0 0 0 100px rgba(0, 255, 0, 0.1); }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .option-section {
+                padding: 12px;
+            }
+            
+            .generate-btn {
+                padding: 10px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="maintenance-mode" id="maintenanceMode">
+        <h1 id="maintenanceTitle">Server Maintenance</h1>
+        <p id="maintenanceMessage">We are updating our server. Please try again later.</p>
+    </div>
+
+    <div class="container" id="appContainer">
+        <div class="header">
+            <div class="vip-badge">SrcLeakerVip</div>
+            <h1>Offset Generate Tool V3.8.0</h1>
+            <div class="subtitle">This Tool Is Not Paid - Free Version</div>
+        </div>
+
+        <div class="option-section">
+            <div class="option-title"><span>1️⃣</span> Select Package Name</div>
+            <p style="font-size: 13px; color: #ccc;">📦 Choose from the list of PUBG Mobile packages (India & Global versions included):</p>
+            <select id="packageName">
+                <option value="com.tencent.ig">com.tencent.ig (Global)</option>
+                <option value="com.pubg.imobile">com.pubg.imobile (India - Battlegrounds Mobile India)</option>
+                <option value="com.vng.pubgmobile">com.vng.pubgmobile (Vietnam)</option>
+                <option value="com.rekoo.pubgm">com.rekoo.pubgm (KR/JP)</option>
+                <option value="com.tencent.iglite">com.tencent.iglite (PUBG Lite)</option>
+            </select>
+        </div>
+
+        <div class="option-section">
+            <div class="option-title"><span>2️⃣</span> Select Lib File (.so)</div>
+            <p style="font-size: 13px; color: #ccc;">🔧 Choose a library to modify offsets:</p>
+            <table class="lib-table">
+                <tr>
+                    <th>Library</th>
+                    <th>Function</th>
+                </tr>
+                <tr>
+                    <td><input type="radio" name="lib" value="libUE4.so" checked> libUE4.so</td>
+                    <td>FULL ANTICHEAT BLOCK</td>
+                </tr>
+                <tr>
+                    <td><input type="radio" name="lib" value="libgcloud.so"> libgcloud.so</td>
+                    <td>Game Server Block</td>
+                </tr>
+                <tr>
+                    <td><input type="radio" name="lib" value="libanogs.so"> libanogs.so</td>
+                    <td>Offline + Online 10yr Block</td>
+                </tr>
+                <tr>
+                    <td><input type="radio" name="lib" value="libGVoiceNN.so"> libGVoiceNN.so</td>
+                    <td>Flag Ban + Observation Ban Fix</td>
+                </tr>
+                <tr>
+                    <td><input type="radio" name="lib" value="libAntsVoice.so"> libAntsVoice.so</td>
+                    <td>Report Block</td>
+                </tr>
+                <tr>
+                    <td><input type="radio" name="lib" value="libhdmpve.so"> libhdmpve.so</td>
+                    <td>Game Server Block (Alternative)</td>
+                </tr>
+                <tr>
+                    <td><input type="radio" name="lib" value="libRoosterNN.so"> libRoosterNN.so</td>
+                    <td>Flag Ban Fix (Alternative)</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="option-section">
+            <div class="option-title"><span>3️⃣</span> Select Bit Architecture</div>
+            <p style="font-size: 13px; color: #ccc;">⚙️ Choose device compatibility:</p>
+            <select id="bitArchitecture">
+                <option value="32">32-bit (ARMv7)</option>
+                <option value="64">64-bit (ARMv8)</option>
+            </select>
+        </div>
+
+        <button class="generate-btn" id="generateBtn">🔴 Generate Offsets (VIP)</button>
+        <div class="loader" id="loader"></div>
+        
+        <div class="success-animation" id="successAnimation">
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+        </div>
+
+        <div class="offset-result" id="offsetResult">
+            <strong>Generated Offsets:</strong><br>
+            <div id="offsets"></div>
+            <button class="copy-btn" id="copyBtn">📋 Copy Offsets</button>
+            <div style="clear:both"></div>
+        </div>
+
+        <div class="vip-features">
+            <h3>🎁 VIP Features (Unlocked in SrcLeakerVip)</h3>
+            <ul>
+                <li>Auto-Offset Finder</li>
+                <li>No Root Required</li>
+                <li>Bypass Detection</li>
+                <li>Instant Ban Fixes</li>
+                <li>Dual-Server Support</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            ⚠️ This is a free version with limited features. For full access, upgrade to <b>SrcLeakerVip Premium!</b>
+        </div>
+
+        <div class="watermark">
+            © SrcLeakerVip - Not for Sale
+        </div>
+    </div>
+
+    <script>
+        // Server status configuration
+        const SERVER_STATUS_URL = "https://pastebin.com/raw/aD2hpXQy";
+        
+        // Check server status with cache-busting
+        async function checkServerStatus() {
+            try {
+                // Add timestamp to URL to prevent caching
+                const url = `${SERVER_STATUS_URL}?t=${Date.now()}`;
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error("Failed to fetch server status");
+                }
+                
+                const data = await response.json();
+                
+                if (data.status === true) {
+                    // Server is online - show app
+                    document.getElementById('maintenanceMode').style.display = 'none';
+                    document.getElementById('appContainer').style.display = 'block';
+                } else {
+                    // Server is offline - show maintenance message
+                    document.getElementById('maintenanceMode').style.display = 'block';
+                    document.getElementById('appContainer').style.display = 'none';
+                    
+                    // Update maintenance message from API
+                    if (data.title) {
+                        document.getElementById('maintenanceTitle').textContent = data.title;
+                    }
+                    if (data.message) {
+                        document.getElementById('maintenanceMessage').textContent = data.message;
+                    }
+                }
+            } catch (error) {
+                console.error("Error checking server status:", error);
+                // If there's an error, show the app by default
+                document.getElementById('maintenanceMode').style.display = 'none';
+                document.getElementById('appContainer').style.display = 'block';
+            }
+        }
+
+        // Check server status when page loads
+        document.addEventListener('DOMContentLoaded', checkServerStatus);
+
+        // Generate offsets with exactly 5 or 6 digits
+        function generateRandomOffset() {
+            const length = Math.random() < 0.5 ? 5 : 6; // Randomly choose 5 or 6 digits
+            let offset = '0x';
+            const chars = '0123456789ABCDEF';
+            
+            // First character can't be 0
+            offset += chars.charAt(Math.floor(Math.random() * 15) + 1);
+            
+            // Remaining characters
+            for (let i = 1; i < length; i++) {
+                offset += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            
+            return offset.toUpperCase();
+        }
+
+        // Generate offsets with animations
+        document.getElementById('generateBtn').addEventListener('click', function() {
+            const btn = this;
+            const loader = document.getElementById('loader');
+            const successAnim = document.getElementById('successAnimation');
+            const resultDiv = document.getElementById('offsetResult');
+            
+            // Show loading animation
+            btn.disabled = true;
+            loader.style.display = 'block';
+            successAnim.style.display = 'none';
+            resultDiv.style.display = 'none';
+            
+            // Simulate processing delay
+            setTimeout(function() {
+                const bit = document.getElementById('bitArchitecture').value;
+                
+                // Generate 5-10 random offsets
+                const offsetCount = 5 + Math.floor(Math.random() * 6);
+                let offsets = [];
+                
+                for (let i = 0; i < offsetCount; i++) {
+                    offsets.push(generateRandomOffset());
+                }
+
+                // Hide loader and show success animation
+                loader.style.display = 'none';
+                successAnim.style.display = 'block';
+                
+                // After 1.5 seconds, show results
+                setTimeout(function() {
+                    successAnim.style.display = 'none';
+                    
+                    // Display results with fancy styling
+                    const offsetsContainer = document.getElementById('offsets');
+                    offsetsContainer.innerHTML = '';
+                    
+                    offsets.forEach(offset => {
+                        const offsetElement = document.createElement('div');
+                        offsetElement.style.color = '#0f0';
+                        offsetElement.style.fontWeight = 'bold';
+                        offsetElement.style.margin = '5px 0';
+                        offsetElement.textContent = offset;
+                        offsetsContainer.appendChild(offsetElement);
+                    });
+                    
+                    resultDiv.style.display = 'block';
+                    btn.disabled = false;
+
+                    // Scroll to results
+                    resultDiv.scrollIntoView({ behavior: 'smooth' });
+                }, 1500);
+            }, 1000 + Math.random() * 1000);
+        });
+
+        // Copy to clipboard
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            const offsets = document.querySelectorAll('#offsets div');
+            let offsetsText = '';
+            
+            offsets.forEach(offset => {
+                offsetsText += offset.textContent + '\n';
+            });
+            
+            navigator.clipboard.writeText(offsetsText.trim()).then(() => {
+                const originalText = this.innerText;
+                this.innerHTML = '✅ Copied!';
+                setTimeout(() => {
+                    this.innerHTML = '📋 Copy Offsets';
+                }, 2000);
+            });
+        });
+
+        // Check every 5 minutes (optional)
+        setInterval(checkServerStatus, 5 * 60 * 1000);
+    </script>
+</body>
+</html>
